@@ -35,17 +35,13 @@
         android:layout_marginTop="28dp"
         android:paddingHorizontal="16dp"/>
 
-    <EditText
-        android:id="@+id/etPassword"
+    <include
+        android:id="@+id/passwordLayout"
         android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:background="@drawable/bg_et"
-        android:layout_marginHorizontal="16dp"
-        android:hint="@string/enter_password"
-        android:paddingHorizontal="16dp"
-        android:layout_marginTop="14dp"
-        android:drawableEnd="@drawable/ic_eye"/>
-    
+        android:layout_height="wrap_content"
+        layout="@layout/et_password_layout"
+        android:layout_marginTop="14dp"/>
+
     <com.google.android.material.button.MaterialButton
         android:layout_width="match_parent"
         android:layout_height="58dp"
