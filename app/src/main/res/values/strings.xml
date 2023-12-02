@@ -9,9 +9,17 @@
     <string name="sign_in">Войти</string>
     <string name="i_do_not_have_account">У меня еще нет аккаунта</string>
     <string name="create_password">Создайте пароль</string>
-    <string name="minimum_one_special_symbol">Минимум 1 спецсимвол (!, \", #, $...)</string>
+    <string name="password_special_char_warning">Минимум 1 спецсимвол (!, \", #, $...)</string>
     <string name="repeat_password">Повторите пароль</string>
     <string name="register">Зарегистрироваться</string>
     <string name="registration">Регистрация</string>
     <string name="create_lorby_account">Создать аккаунт Lorby</string>
+    <string name="password_length_warning">От 8 до 15 символов</string>
+    <string name="password_lower_upper_case_warning">Строчные и прописные буквы</string>
+    <string name="password_digit_warning">Минимум 1 цифра</string>
+    <string name="check_spam">Если письмо не пришло, <font color='#000000'>проверьте ящик “Спам”</font></string>
+    <string name="letter_sent_to_email">Выслали письмо со ссылкой для завершения регистрации на {email}</string>
+    <string name="another_confirmation_msg_sent">Мы выслали еще одно письмо на указанную почту {email}</string>
+    <string name="dont_forget_to_check_spam">Не забудь проверить ящик “Спам"</string>
+    <string name="passwords_dont_match">Пароли не совпадают</string>
 </resources>

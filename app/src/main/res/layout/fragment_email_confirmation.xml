@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".ui.reg.EmailConfirmationFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/tbConfirmEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:title="@string/registration"
+            app:titleCentered="true" />
+
+        <TextView
+            android:id="@+id/tvConfirmationSent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="31dp"
+            android:layout_marginTop="36dp"
+            android:text="@string/letter_sent_to_email"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvCheckSpam"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="31dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/check_spam"
+            android:textAlignment="center"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:layout_width="224dp"
+            android:layout_height="231dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="58dp"
+            android:src="@drawable/ic_confirm_email" />
+
+        <TextView
+            android:id="@+id/tvNoEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="70dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:text="Письмо не пришло"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+
+</ScrollView>

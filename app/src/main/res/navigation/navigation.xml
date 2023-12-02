@@ -13,10 +13,26 @@
         <action
             android:id="@+id/action_signInFragment_to_registrationFragment"
             app:destination="@id/registrationFragment" />
+        <action
+            android:id="@+id/action_signInFragment_to_emailConfirmationFragment"
+            app:destination="@id/emailConfirmationFragment" />
     </fragment>
     <fragment
         android:id="@+id/registrationFragment"
         android:name="com.example.authapplication.ui.reg.RegistrationFragment"
         android:label="fragment_registration"
-        tools:layout="@layout/fragment_registration" />
+        tools:layout="@layout/fragment_registration" >
+        <action
+            android:id="@+id/action_registrationFragment_to_emailConfirmationFragment"
+            app:destination="@id/emailConfirmationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/emailConfirmationFragment"
+        android:name="com.example.authapplication.ui.reg.EmailConfirmationFragment"
+        android:label="fragment_email_confirmation"
+        tools:layout="@layout/fragment_email_confirmation" >
+        <argument
+            android:name="email"
+            app:argType="string" />
+    </fragment>
 </navigation>

@@ -40,4 +40,6 @@ class PasswordView @JvmOverloads constructor(
     }
 
     fun getText() = binding.etPassword.text.toString()
+
+    fun getEditText() = binding.etPassword
 }

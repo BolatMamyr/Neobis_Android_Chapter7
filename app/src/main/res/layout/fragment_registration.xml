@@ -76,7 +76,7 @@
                 android:layout_marginTop="6dp"
                 android:drawableStart="@drawable/ic_gray_circle"
                 android:drawablePadding="6dp"
-                android:text="От 8 до 15 символов"
+                android:text="@string/password_length_warning"
                 android:textColor="@color/gray"
                 android:textSize="12sp"
                 android:textStyle="bold"
@@ -84,14 +84,14 @@
                 app:layout_constraintTop_toBottomOf="@id/pvCreatePassword" />
 
             <TextView
-                android:id="@+id/tvCase"
+                android:id="@+id/tvLowerUppercase"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="4dp"
                 android:drawableStart="@drawable/ic_gray_circle"
                 android:drawablePadding="6dp"
-                android:text="Строчные и прописные буквы"
+                android:text="@string/password_lower_upper_case_warning"
                 android:textColor="@color/gray"
                 android:textSize="12sp"
                 android:textStyle="bold"
@@ -106,12 +106,12 @@
                 android:layout_marginTop="4dp"
                 android:drawableStart="@drawable/ic_gray_circle"
                 android:drawablePadding="6dp"
-                android:text="Минимум 1 цифра"
+                android:text="@string/password_digit_warning"
                 android:textColor="@color/gray"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvCase" />
+                app:layout_constraintTop_toBottomOf="@id/tvLowerUppercase" />
 
             <TextView
                 android:id="@+id/tvSpecialChar"
@@ -121,7 +121,7 @@
                 android:layout_marginTop="4dp"
                 android:drawableStart="@drawable/ic_gray_circle"
                 android:drawablePadding="6dp"
-                android:text="@string/minimum_one_special_symbol"
+                android:text="@string/password_special_char_warning"
                 android:textColor="@color/gray"
                 android:textSize="12sp"
                 android:textStyle="bold"
@@ -142,7 +142,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="6dp"
-                android:text="Пароли не совпадают"
+                android:text="@string/passwords_dont_match"
+                android:focusable="true"
                 android:textColor="@color/red"
                 android:textSize="12sp"
                 android:textStyle="bold"
@@ -163,6 +164,7 @@
                 android:textColor="@color/gray"
                 android:textStyle="bold"
                 app:cornerRadius="@dimen/cornerRadius_10dp"
+                android:enabled="false"
                 app:layout_constraintTop_toBottomOf="@id/pvRepeat" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
