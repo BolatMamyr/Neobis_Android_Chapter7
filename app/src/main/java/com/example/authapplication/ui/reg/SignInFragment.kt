@@ -22,17 +22,19 @@ class SignInFragment : Fragment() {
         return binding.root
     }
 
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.btnSignIn.btn.text = getString(R.string.sign_in)
         binding.btnGoToReg.setOnClickListener {
             findNavController().navigate(R.id.action_signInFragment_to_registrationFragment)
         }
 
-//        findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToEmailConfirmationFragment("ahaha"))
+        findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToEmailConfirmationFragment("bolat@mail.ru"))
     }
 
 }
