@@ -1,14 +1,21 @@
 package com.example.authapplication.ui.reg
 
-import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.authapplication.model.CreateUserRequestBody
 import com.example.authapplication.model.ResponseState
 import com.example.authapplication.other.Constants
-import java.util.regex.Pattern
+import com.example.authapplication.other.ValidationUtils
+import com.example.authapplication.repo.AuthRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RegistrationViewModel : ViewModel() {
+@HiltViewModel
+class RegistrationViewModel @Inject constructor(private val authRepository: AuthRepository) :
+    ViewModel() {
 
     private val _passwordMatchState = MutableLiveData<ResponseState<Unit>>()
     val passwordMatchState: LiveData<ResponseState<Unit>> = _passwordMatchState
@@ -16,53 +23,21 @@ class RegistrationViewModel : ViewModel() {
     private val _emailValidState = MutableLiveData<ResponseState<Unit>>()
     val emailValidState: LiveData<ResponseState<Unit>> = _emailValidState
 
-    private val _registrationState = MutableLiveData<ResponseState<String>>()
-    val registrationState: LiveData<ResponseState<String>> = _registrationState
+    private val _registrationState = MutableLiveData<ResponseState<CreateUserRequestBody>>()
+    val registrationState: LiveData<ResponseState<CreateUserRequestBody>> = _registrationState
 
-    private fun isPasswordCorrect(psw: String): Boolean {
-        val isLengthCorrect = isLengthCorrect(psw)
-        val containsLowerAndUppercase = containsLowerAndUppercase(psw)
-        val containsDigit = containsDigit(psw)
-        val containsSpecialSymbol = containsSpecialSymbol(psw)
+    private val _createNewUserState = MutableLiveData<ResponseState<String>>()
+    val createNewUserState: LiveData<ResponseState<String>> = _createNewUserState
 
-        return isLengthCorrect && containsLowerAndUppercase && containsDigit && containsSpecialSymbol
-    }
-
-    fun isLengthCorrect(input: String): Boolean {
-        return input.length in 8..15
-    }
-
-    fun containsLowerAndUppercase(input: String): Boolean {
-        var hasLowerCase = false
-        var hasUpperCase = false
-
-        for (char in input) {
-            if (char.isLowerCase()) hasLowerCase = true
-            else if (char.isUpperCase()) hasUpperCase = true
-        }
-        return hasLowerCase && hasUpperCase
-    }
-
-    fun containsDigit(input: String): Boolean {
-        for (char in input) {
-            if (char.isDigit()) return true
-        }
-        return false
-    }
-
-    fun containsSpecialSymbol(input: String): Boolean {
-        val special = Pattern.compile("[!@#$%&*()_+=|<>?{}\\[\\]~-]")
-        return special.matcher(input).find()
-    }
-
-    private fun isEmailValid(input: String): Boolean {
-        if (input.isEmpty()) return false
-        return Patterns.EMAIL_ADDRESS.matcher(input).matches()
-    }
-
-    fun register(email: String, login: String, password: String, repeatPassword: String) {
-        val isEmailValid = isEmailValid(email)
-        val isPasswordCorrect = isPasswordCorrect(password)
+    // checks email, login and password for correctness
+    fun validateRegistrationData(
+        email: String,
+        username: String,
+        password: String,
+        repeatPassword: String
+    ) {
+        val isEmailValid = ValidationUtils.isEmailValid(email)
+        val isPasswordCorrect = ValidationUtils.isPasswordCorrect(password)
         val doesPasswordMatch = password == repeatPassword
         if (!isEmailValid) {
             _emailValidState.value = ResponseState.Error(Exception(Constants.NOT_VALID))
@@ -75,7 +50,25 @@ class RegistrationViewModel : ViewModel() {
 
         // no need to check login bcs button is enabled only if all fields are filled
         if (isEmailValid && isPasswordCorrect && doesPasswordMatch) {
-            _registrationState.value = ResponseState.Success(email)
+            _registrationState.value = ResponseState.Success(CreateUserRequestBody(email, username, password))
+        }
+    }
+
+    fun createNewUser(createUserRequestBody: CreateUserRequestBody) {
+        viewModelScope.launch {
+            _createNewUserState.value = ResponseState.Loading
+
+            try {
+                val response = authRepository.createNewUser(createUserRequestBody)
+                val email = response.body()
+                if (response.isSuccessful && !email.isNullOrEmpty()) {
+                    _createNewUserState.value = ResponseState.Success(email)
+                } else {
+                    _createNewUserState.value = ResponseState.Error(Exception("ERROR"))
+                }
+            } catch (e: Exception) {
+                _createNewUserState.value = ResponseState.Error(e)
+            }
         }
     }
 }

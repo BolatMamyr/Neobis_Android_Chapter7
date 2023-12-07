@@ -23,4 +23,5 @@
     <string name="dont_forget_to_check_spam">Не забудь проверить ящик “Спам"</string>
     <string name="passwords_dont_match">Пароли не совпадают</string>
     <string name="got_it">Понятно</string>
+    <string name="lorby_title">Lorby - твой личный репетитор</string>
 </resources>

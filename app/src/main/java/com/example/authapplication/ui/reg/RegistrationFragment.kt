@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
@@ -13,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.authapplication.R
 import com.example.authapplication.databinding.FragmentRegistrationBinding
 import com.example.authapplication.model.ResponseState
+import com.example.authapplication.other.ValidationUtils
 
 class RegistrationFragment : Fragment() {
 
@@ -39,20 +41,39 @@ class RegistrationFragment : Fragment() {
         binding.tbReg.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
+        binding.btnReg.setOnClickListener {
+            validateRegistrationData()
+        }
         setHints()
+        observeValidation()
         observeRegistration()
-        register()
 
         addTextWatcher(binding.etRegEmail)
         addTextWatcher(binding.etRegLogin)
         addTextWatcher(binding.pvCreatePassword.getEditText())
         addTextWatcher(binding.pvRepeat.getEditText())
+
+        addPasswordChangeListener()
+
+        addRepeatPasswordChangeListener()
+    }
+
+    // to make error msg gone when typing
+    private fun addRepeatPasswordChangeListener() {
+        binding.pvRepeat.getEditText().addTextChangedListener {
+            binding.tvRepeatPasswordError.isVisible = false
+        }
+    }
+
+
+    // for dynamically changing password warnings
+    private fun addPasswordChangeListener() {
         binding.pvCreatePassword.getEditText().addTextChangedListener {
             it?.toString()?.let { psw ->
-                val isLengthCorrect = viewModel.isLengthCorrect(psw)
-                val containsLowerAndUppercase = viewModel.containsLowerAndUppercase(psw)
-                val containsDigit = viewModel.containsDigit(psw)
-                val containsSpecialSymbol = viewModel.containsSpecialSymbol(psw)
+                val isLengthCorrect = ValidationUtils.isLengthCorrect(psw)
+                val containsLowerAndUppercase = ValidationUtils.containsLowerAndUppercase(psw)
+                val containsDigit = ValidationUtils.containsDigit(psw)
+                val containsSpecialSymbol = ValidationUtils.containsSpecialSymbol(psw)
 
                 if (isLengthCorrect) {
                     binding.tvLength.text = getString(R.string.password_length_warning) + "\u2705"
@@ -88,10 +109,6 @@ class RegistrationFragment : Fragment() {
                 }
             }
         }
-
-        binding.pvRepeat.getEditText().addTextChangedListener {
-            binding.tvRepeatPasswordError.isVisible = false
-        }
     }
 
     // Enables button if all fields are filled and password is correct.
@@ -102,10 +119,10 @@ class RegistrationFragment : Fragment() {
             val password = binding.pvCreatePassword.getText()
             val repeatPassword = binding.pvRepeat.getText()
 
-            val isLengthCorrect = viewModel.isLengthCorrect(password)
-            val containsLowerAndUppercase = viewModel.containsLowerAndUppercase(password)
-            val containsDigit = viewModel.containsDigit(password)
-            val containsSpecialSymbol = viewModel.containsSpecialSymbol(password)
+            val isLengthCorrect = ValidationUtils.isLengthCorrect(password)
+            val containsLowerAndUppercase = ValidationUtils.containsLowerAndUppercase(password)
+            val containsDigit = ValidationUtils.containsDigit(password)
+            val containsSpecialSymbol = ValidationUtils.containsSpecialSymbol(password)
 
             val isPasswordCorrect = isLengthCorrect && containsLowerAndUppercase
                     && containsDigit && containsSpecialSymbol
@@ -117,7 +134,7 @@ class RegistrationFragment : Fragment() {
             }
         }
     }
-    
+
     private fun enableButton(value: Boolean) {
         binding.btnReg.apply {
             isEnabled = value
@@ -136,15 +153,45 @@ class RegistrationFragment : Fragment() {
         }
     }
 
+    private fun showProgressBar() {
+        binding.pbReg.isVisible = true
+        binding.btnReg.isVisible = false
+    }
+
+    private fun hideProgressBar() {
+        binding.pbReg.isVisible = false
+        binding.btnReg.isVisible = true
+    }
 
     private fun observeRegistration() {
-        viewModel.registrationState.observe(viewLifecycleOwner) {
+        viewModel.createNewUserState.observe(viewLifecycleOwner) {
             when (it) {
+                ResponseState.Loading -> showProgressBar()
                 is ResponseState.Success -> {
+                    hideProgressBar()
                     val email = it.data
                     val action = RegistrationFragmentDirections
                         .actionRegistrationFragmentToEmailConfirmationFragment(email)
                     findNavController().navigate(action)
+                }
+
+                is ResponseState.Error -> {
+                    it.throwable.message
+                    Toast.makeText(
+                        requireContext(),
+                        it.throwable.localizedMessage,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+    }
+
+    private fun observeValidation() {
+        viewModel.registrationState.observe(viewLifecycleOwner) {
+            when (it) {
+                is ResponseState.Success -> {
+                    viewModel.createNewUser(it.data)
                 }
 
                 else -> Unit
@@ -180,15 +227,13 @@ class RegistrationFragment : Fragment() {
         binding.pvRepeat.setHint(getString(R.string.repeat_password))
     }
 
-    private fun register() {
-        binding.btnReg.setOnClickListener {
-            val email = binding.etRegEmail.text.toString()
-            val login = binding.etRegLogin.text.toString()
-            val password = binding.pvCreatePassword.getText()
-            val repeatPassword = binding.pvRepeat.getText()
+    private fun validateRegistrationData() {
+        val email = binding.etRegEmail.text.toString()
+        val login = binding.etRegLogin.text.toString()
+        val password = binding.pvCreatePassword.getText()
+        val repeatPassword = binding.pvRepeat.getText()
 
-            viewModel.register(email, login, password, repeatPassword)
-        }
+        viewModel.validateRegistrationData(email, login, password, repeatPassword)
     }
 
 }

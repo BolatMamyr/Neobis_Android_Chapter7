@@ -160,6 +160,16 @@
                 app:cornerRadius="@dimen/cornerRadius_10dp"
                 android:enabled="false"
                 app:layout_constraintTop_toBottomOf="@id/pvRepeat" />
+
+            <ProgressBar
+                android:id="@+id/pbReg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/btnReg"
+                app:layout_constraintBottom_toBottomOf="@id/btnReg"
+                app:layout_constraintStart_toStartOf="@id/btnReg"
+                app:layout_constraintEnd_toEndOf="@id/btnReg"
+                android:visibility="gone"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </LinearLayout>
