@@ -17,6 +17,10 @@ class PrefManager @Inject constructor(private val pref: SharedPreferences) {
         return pref.getInt(key, defaultValue)
     }
 
+    fun remove(key: String) {
+        pref.edit().remove(key).apply()
+    }
+
     fun putInt(key: String, value: Int) {
         pref.edit().putInt(key, value).apply()
     }

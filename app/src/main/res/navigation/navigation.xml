@@ -9,10 +9,16 @@
         android:id="@+id/signInFragment"
         android:name="com.example.authapplication.ui.reg.SignInFragment"
         android:label="fragment_sign_in"
-        tools:layout="@layout/fragment_sign_in" >
+        tools:layout="@layout/fragment_sign_in">
         <action
             android:id="@+id/action_signInFragment_to_registrationFragment"
             app:destination="@id/registrationFragment" />
+        <action
+            android:id="@+id/action_signInFragment_to_mainFragment"
+            app:destination="@id/mainFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/signInFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_signInFragment_to_emailConfirmationFragment"
             app:destination="@id/emailConfirmationFragment" />
@@ -21,7 +27,7 @@
         android:id="@+id/registrationFragment"
         android:name="com.example.authapplication.ui.reg.RegistrationFragment"
         android:label="fragment_registration"
-        tools:layout="@layout/fragment_registration" >
+        tools:layout="@layout/fragment_registration">
         <action
             android:id="@+id/action_registrationFragment_to_emailConfirmationFragment"
             app:destination="@id/emailConfirmationFragment" />
@@ -30,9 +36,27 @@
         android:id="@+id/emailConfirmationFragment"
         android:name="com.example.authapplication.ui.reg.EmailConfirmationFragment"
         android:label="fragment_email_confirmation"
-        tools:layout="@layout/fragment_email_confirmation" >
+        tools:layout="@layout/fragment_email_confirmation">
+
+        <action
+            android:id="@+id/action_emailConfirmationFragment_to_signInFragment"
+            app:destination="@id/signInFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/emailConfirmationFragment"
+            app:popUpToInclusive="true" />
         <argument
             android:name="email"
-            app:argType="string" />
+            app:argType="string"
+            android:defaultValue="email" />
     </fragment>
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.example.authapplication.ui.main.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_signInFragment2"
+            app:destination="@id/signInFragment" />
+    </fragment>
+
 </navigation>

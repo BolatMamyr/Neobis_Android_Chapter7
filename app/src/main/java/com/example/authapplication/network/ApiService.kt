@@ -1,8 +1,10 @@
 package com.example.authapplication.network
 
+import com.example.authapplication.model.ApiResponse
 import com.example.authapplication.model.TokenRequestBody
 import com.example.authapplication.model.CreateUserRequestBody
 import com.example.authapplication.model.CreateUserResponse
+import com.example.authapplication.model.TokenResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -14,7 +16,7 @@ interface ApiService {
     @POST("/auth/registration")
     suspend fun createNewUser(
         @Body createUserRequestBody: CreateUserRequestBody
-    ): Response<CreateUserResponse>
+    ): Response<Any>
 
     /**
      * Creates and returns token
@@ -22,7 +24,7 @@ interface ApiService {
     @POST("/auth/authenticate")
     suspend fun createAuthToken(
         @Body tokenRequestBody: TokenRequestBody
-    ): Response<String>
+    ): Response<TokenResponse>
 
 
     // TODO: ASK HOW TO ACTIVATE

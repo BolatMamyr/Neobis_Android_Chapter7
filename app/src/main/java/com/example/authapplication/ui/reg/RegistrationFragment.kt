@@ -7,15 +7,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.authapplication.R
 import com.example.authapplication.databinding.FragmentRegistrationBinding
+import com.example.authapplication.model.ApiResponse
 import com.example.authapplication.model.ResponseState
 import com.example.authapplication.other.ValidationUtils
+import com.example.authapplication.other.myloge
+import com.example.authapplication.other.navigate
+import com.example.authapplication.other.toast
+import com.example.authapplication.ui.reg.viewmodels.RegistrationViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RegistrationFragment : Fragment() {
 
     private var _binding: FragmentRegistrationBinding? = null
@@ -155,7 +163,7 @@ class RegistrationFragment : Fragment() {
 
     private fun showProgressBar() {
         binding.pbReg.isVisible = true
-        binding.btnReg.isVisible = false
+        binding.btnReg.isInvisible = true
     }
 
     private fun hideProgressBar() {
@@ -166,22 +174,23 @@ class RegistrationFragment : Fragment() {
     private fun observeRegistration() {
         viewModel.createNewUserState.observe(viewLifecycleOwner) {
             when (it) {
-                ResponseState.Loading -> showProgressBar()
-                is ResponseState.Success -> {
+                ApiResponse.Loading -> showProgressBar()
+                is ApiResponse.Success -> {
                     hideProgressBar()
-                    val email = it.data
+                    val email = it.data.email
                     val action = RegistrationFragmentDirections
                         .actionRegistrationFragmentToEmailConfirmationFragment(email)
-                    findNavController().navigate(action)
+                    navigate(action)
                 }
-
-                is ResponseState.Error -> {
-                    it.throwable.message
-                    Toast.makeText(
-                        requireContext(),
-                        it.throwable.localizedMessage,
-                        Toast.LENGTH_SHORT
-                    ).show()
+                is ApiResponse.Error -> {
+                    hideProgressBar()
+                    val msg = it.errorResponse.message
+                    toast(msg)
+                }
+                is ApiResponse.Exception -> {
+                    hideProgressBar()
+                    toast(getString(R.string.something_went_wrong))
+                    myloge("observeRegistration: ${it.throwable.stackTraceToString()}")
                 }
             }
         }

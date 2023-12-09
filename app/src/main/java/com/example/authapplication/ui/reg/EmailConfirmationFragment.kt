@@ -11,6 +11,8 @@ import androidx.navigation.fragment.navArgs
 import com.example.authapplication.R
 import com.example.authapplication.databinding.FragmentEmailConfirmationBinding
 import com.example.authapplication.other.MyAlertDialog
+import com.example.authapplication.other.mylogi
+import com.example.authapplication.other.navigate
 
 class EmailConfirmationFragment : Fragment() {
 
@@ -35,7 +37,8 @@ class EmailConfirmationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.tbConfirmEmail.setNavigationOnClickListener {
-            findNavController().navigateUp()
+            mylogi("GO BACK")
+            navigate(R.id.action_emailConfirmationFragment_to_signInFragment)
         }
 
         binding.tvConfirmationSent.text =

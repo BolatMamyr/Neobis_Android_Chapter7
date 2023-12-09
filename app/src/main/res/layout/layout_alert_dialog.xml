@@ -28,7 +28,7 @@
         android:gravity="center_horizontal"
         android:textSize="16sp"
         android:textColor="@color/gray"
-        tools:text="Не забудь проверить ящик “Спам”!11!!!!" />
+        tools:text="@string/dont_forget_to_check_spam" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnPositive"
