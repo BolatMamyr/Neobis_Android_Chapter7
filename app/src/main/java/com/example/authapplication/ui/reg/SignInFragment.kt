@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.example.authapplication.R
 import com.example.authapplication.databinding.FragmentSignInBinding
 import com.example.authapplication.managers.UserManager

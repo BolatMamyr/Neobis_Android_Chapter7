@@ -24,13 +24,5 @@ interface ApiService {
     @POST("/auth/authenticate")
     suspend fun createAuthToken(
         @Body tokenRequestBody: TokenRequestBody
-    ): Response<TokenResponse>
-
-
-    // TODO: ASK HOW TO ACTIVATE
-    @GET("/auth/activate")
-    suspend fun activateUserAccount(
-        @Query("token") token: String
-    ): Response<Unit>
-
+    ): Response<Any>
 }

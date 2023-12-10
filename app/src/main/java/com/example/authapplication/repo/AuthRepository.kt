@@ -13,12 +13,8 @@ class AuthRepository @Inject constructor(private val api: ApiService) {
         return api.createNewUser(userInfo)
     }
 
-    suspend fun createAuthToken(tokenRequestBody: TokenRequestBody): Response<TokenResponse> {
+    suspend fun createAuthToken(tokenRequestBody: TokenRequestBody): Response<Any> {
         return api.createAuthToken(tokenRequestBody)
-    }
-
-    suspend fun activateUserAccount(token: String): Response<Unit> {
-        return api.activateUserAccount(token)
     }
 
 }
